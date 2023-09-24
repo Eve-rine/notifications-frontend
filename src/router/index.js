@@ -1,7 +1,9 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import Vue from 'vue'
+import VueRouter from 'vue-router'
 // login
 import LoginRegister from '../components/LoginComponent.vue'
 
+Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
@@ -25,9 +27,24 @@ const routes = [
 
 ]
 
-const router = createRouter({
-  history: createWebHistory(process.env.BASE_URL),
+const router = new VueRouter({
+  mode: 'history',
+  base: '',
   routes
 })
+router.beforeEach((to, from, next) => {
+  if (!to.meta.middleware) {
+    return next()
+  }
+  const middleware = to.meta.middleware
 
+  const context = {
+    to,
+    from,
+    next,
+  }
+  return middleware[0]({
+    ...context
+  })
+});
 export default router
