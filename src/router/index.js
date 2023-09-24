@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 // login
 import LoginRegister from '../components/LoginComponent.vue'
 import Dashboard from "@/views/Dashboard.vue";
+import Authentication from "@/middleware/Auth";
 
 Vue.use(VueRouter)
 const routes = [
@@ -28,9 +29,13 @@ const routes = [
     path: '/notify',
     name: 'SendNotification',
     component: () => import('../components/SendNotification.vue'),
+    meta: {
+      middleware: [Authentication],
+    },
   },
 
 ]
+
 
 const router = new VueRouter({
   mode: 'history',
