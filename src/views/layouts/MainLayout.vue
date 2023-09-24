@@ -168,23 +168,11 @@ export default {
         sublinks: []
       },
       {
-        title: 'Customers',
+        title: 'Notify',
         icon: 'mdi-account-multiple',
-        to: '/customers',
+        to: '/notify',
         sublinks: []
       },
-      {
-        title: 'Products',
-        icon: 'mdi-list-box-outline',
-        to: '/products',
-        sublinks: []
-      },
-      {
-        title: 'Orders',
-        icon: 'mdi-playlist-check',
-        to: '/orders',
-        sublinks: []
-      }
     ]
   }),
   methods: {

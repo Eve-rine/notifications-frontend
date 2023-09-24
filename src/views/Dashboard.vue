@@ -1,13 +1,13 @@
 <template>
   <v-app>
-  <v-container>
+<!--  <v-container>-->
     <v-row>
       <v-col cols="12" md="4" sm="12">
         <div>
           <v-card
               flat
               style="background-color: #ffffff"
-              elevation="0"
+              elevation="1"
               class="mx-2 mt-3"
           >
             <v-list>
@@ -16,7 +16,7 @@
                   <v-list-item-title class="text-lg-h5">{{customers?
                       customers.length:0
                     }}</v-list-item-title>
-                  <v-list-item-subtitle>Customers</v-list-item-subtitle>
+                  <v-list-item-subtitle>Total Notifications</v-list-item-subtitle>
                 </v-list-item-content>
                 <v-list-item-action>
                   <v-avatar color="primary light-1" size="53">
@@ -33,7 +33,7 @@
           <v-card
               flat
               style="background-color: #ffffff"
-              elevation="0"
+              elevation="1"
               class="mx-2 mt-3"
           >
             <v-list>
@@ -42,7 +42,7 @@
                   <v-list-item-title class="text-lg-h5">{{orders?
                       orders.length:0
                     }}</v-list-item-title>
-                  <v-list-item-subtitle>Orders</v-list-item-subtitle>
+                  <v-list-item-subtitle>Total Sms Notifiactions</v-list-item-subtitle>
                 </v-list-item-content>
                 <v-list-item-action>
                   <v-avatar color="primary light-1" size="53">
@@ -59,7 +59,7 @@
           <v-card
               flat
               style="background-color: #ffffff"
-              elevation="0"
+              elevation="1"
               class="mx-2 mt-3"
           >
             <v-list>
@@ -68,7 +68,7 @@
                   <v-list-item-title class="text-lg-h5">{{vehicles?
                       vehicles.length:0
                     }}</v-list-item-title>
-                  <v-list-item-subtitle>Vehicles</v-list-item-subtitle>
+                  <v-list-item-subtitle>Total Email Notifications</v-list-item-subtitle>
                 </v-list-item-content>
                 <v-list-item-action>
                   <v-avatar color="primary light-1" size="53">
@@ -82,116 +82,46 @@
       </v-col>
     </v-row>
     <v-row>
-      <v-col cols="12" md="6">
+      <v-col cols="12" md="12">
         <v-card flat>
-          <v-card-title> Allocate Orders </v-card-title>
-          <v-divider/>
-          <v-card-text>
-            <div class="mx-3">
-              <v-form ref="loadingForm" v-model="isValid">
-                <v-row> </v-row>
-                <v-row>
-                  <v-col cols="12" md="12">
-                    <v-row>
-                      <v-col cols="12" md="12">
-                        <v-select
-                            outlined
-                            dense
-                            v-model="formData.order_number"
-                            :items="pendingOrders"
-                            :item-text="(item) => item.order_number"
-                            :item-value="(item) => item.id"
-                            label="Select Order"
-                            :rules="[rules.required]"
-                        ></v-select>
-                      </v-col>
-                      <v-col cols="12" md="12">
-                        <v-select
-                            outlined
-                            dense
-                            v-model="formData.fleet_id"
-                            :items="availableVehicles"
-                            :item-text="(item) => item.registration_number"
-                            :item-value="(item) => item.id"
-                            label="Select Vehicle"
-                            :rules="[rules.required]"
-                        ></v-select>
-                      </v-col>
-                    </v-row>
-                  </v-col>
-                </v-row>
-              </v-form>
-            </div>
-            <v-card-actions>
-              <v-spacer />
-              <v-btn
-                  @click="resetform"
-                  class="mr-2"
-                  elevation="0"
-                  color="error"
-              >
-                <span> RESET </span>
-              </v-btn>
-              <v-btn
-                  @click="allocate"
-                  class="mr-2"
-                  elevation="0"
-                  color="primary"
-              >
-                <span> ALLOCATE </span>
-              </v-btn>
-            </v-card-actions>
-          </v-card-text>
-        </v-card>
-      </v-col>
-      <v-col cols="12" md="6">
-        <v-card flat>
-          <v-card-title> Dispatch Orders </v-card-title>
-          <v-divider/>
-          <v-card-text>
-            <div class="mx-3">
-              <v-form ref="dispatchForm" v-model="isValid">
-                <v-row> </v-row>
-                <v-row>
-                  <v-col cols="12" md="12">
-                    <v-select
-                        outlined
-                        dense
-                        v-model="dispatchForm.fleet_id"
-                        :items="loadedVehicles"
-                        :item-text="(item) => item.registration_number"
-                        :item-value="(item) => item.id"
-                        label="Select Vehicle"
-                        :rules="[rules.required]"
-                    ></v-select>
-                  </v-col>
-                </v-row>
-              </v-form>
-            </div>
-          </v-card-text>
-          <v-card-actions>
+          <v-card-title>
+            <span>Notifications List</span>
             <v-spacer />
-            <v-btn
-                @click="resetDispatchForm"
-                class="mr-2"
-                elevation="0"
-                color="error"
+            <div class="ma-2">
+              <v-btn
+                  class="indigo white--text"
+                  @click="openModal()"
+              >
+                <v-icon class="mr-2">mdi-plus</v-icon>Send Notification
+              </v-btn>
+            </div>
+          </v-card-title>
+          <v-divider />
+          <v-card-text>
+            <v-data-table
+                :items-per-page="10"
+                :headers="headers"
+                :items="notifications"
             >
-              <span> Reset </span>
-            </v-btn>
-            <v-btn
-                @click="dispatchOrders"
-                class="mr-2"
-                elevation="0"
-                color="primary"
-            >
-              <span> Dispatch </span>
-            </v-btn>
-          </v-card-actions>
+              <template v-slot:[`item.ID`]="{ index }">
+                <!-- <template v-slot:item.ID="{ index }"> -->
+                <span>{{ index + 1 }}</span>
+              </template>
+              <template v-slot:[`item.sent_to`]="{ item }">
+                <span>{{item.sent_to }}</span>
+              </template>
+              <template v-slot:[`item.mode`]="{ item }">
+                <span>{{item.mode }}</span>
+              </template>
+              <template v-slot:[`item.sent_at`]="{ item }">
+                <span>{{item.sent_at }}</span>
+              </template>
+            </v-data-table>
+          </v-card-text>
         </v-card>
       </v-col>
     </v-row>
-  </v-container>
+<!--  </v-container>-->
   </v-app>
 </template>
 
@@ -228,6 +158,7 @@ export default {
     loadedVehicles: [],
     availableVehicles: [],
     pendingOrders: [],
+    notifications: [],
 
   }),
   computed: {
