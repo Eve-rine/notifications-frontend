@@ -1,12 +1,14 @@
 <template>
   <v-app>
     <!--  Side Bar  -->
-    <template v-if="!$route.path.includes('login')">
+    <!--    <template v-if="!$route.path.includes('login')">-->
+    <template>
       <v-navigation-drawer
           v-model="drawer"
-          expand-on-hover
+          :permanent="$vuetify.breakpoint.mdAndUp"
+          :mini-variant="$vuetify.breakpoint.mdAndUp ? mini : false"
           app
-          color="primary"
+          color="aside"
           dark
           style="font-family: 'PT Sans Caption', sans-serif"
           class="fill-height"
@@ -16,10 +18,8 @@
             <v-avatar class="align-self-center" size="70">
               <v-img
                   alt="Logo"
-
                   transition="scale-transition"
               />
-<!--              :src="require('../assets/fikisha-logo.png')"-->
             </v-avatar>
           </div>
 
@@ -108,16 +108,16 @@
       </v-navigation-drawer>
 
       <!--  App Bar  -->
-      <v-app-bar app elevation="0" color="primary">
-<!--        <v-app-bar-nav-icon-->
-<!--            v-if="$vuetify.breakpoint.smAndDown"-->
-<!--            @click="drawer = !drawer"-->
-<!--        ></v-app-bar-nav-icon>-->
+      <v-app-bar app elevation="0">
+        <v-app-bar-nav-icon
+            v-if="$vuetify.breakpoint.smAndDown"
+            @click="drawer = !drawer"
+        ></v-app-bar-nav-icon>
 
-<!--        <v-app-bar-nav-icon-->
-<!--            v-if="$vuetify.breakpoint.mdAndUp"-->
-<!--            @click="mini = !mini"-->
-<!--        ></v-app-bar-nav-icon>-->
+        <v-app-bar-nav-icon
+            v-if="$vuetify.breakpoint.mdAndUp"
+            @click="mini = !mini"
+        ></v-app-bar-nav-icon>
         <v-spacer class="spacer" sm="0" />
         <v-btn rounded icon @click="$vuetify.theme.dark = !$vuetify.theme.dark">
           <v-icon>mdi-theme-light-dark</v-icon>
@@ -174,9 +174,9 @@ export default {
         sublinks: []
       },
       {
-        title: 'Vehicles',
-        icon: 'mdi-car-pickup',
-        to: '/vehicles',
+        title: 'Products',
+        icon: 'mdi-list-box-outline',
+        to: '/products',
         sublinks: []
       },
       {

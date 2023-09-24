@@ -1,12 +1,14 @@
 <template>
-  <main-view></main-view>
+  <main-layout>
+  </main-layout>
+
 </template>
 <script>
-import MainView from "./views/MainView.vue";
+import MainLayout from "@/views/layouts/MainLayout.vue";
 export default {
   name: "App",
   components: {
-    MainView,
+    MainLayout,
   },
 };
 </script>
