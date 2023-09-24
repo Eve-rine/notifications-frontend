@@ -113,10 +113,6 @@
             @click="drawer = !drawer"
         ></v-app-bar-nav-icon>
 
-        <v-app-bar-nav-icon
-            v-if="$vuetify.breakpoint.mdAndUp"
-            @click="mini = !mini"
-        ></v-app-bar-nav-icon>
         <v-spacer class="spacer" sm="0" />
         <v-btn rounded icon @click="$vuetify.theme.dark = !$vuetify.theme.dark">
           <v-icon>mdi-theme-light-dark</v-icon>
