@@ -20,7 +20,7 @@
                 </v-list-item-content>
                 <v-list-item-action>
                   <v-avatar color="primary light-1" size="53">
-                    <v-icon color="white">mdi-account-multiple</v-icon>
+                    <v-icon color="white">mdi-bell-ring</v-icon>
                   </v-avatar>
                 </v-list-item-action>
               </v-list-item>
@@ -46,7 +46,7 @@
                 </v-list-item-content>
                 <v-list-item-action>
                   <v-avatar color="primary light-1" size="53">
-                    <v-icon color="white">mdi-playlist-check</v-icon>
+                    <v-icon color="white">mdi-message-processing</v-icon>
                   </v-avatar>
                 </v-list-item-action>
               </v-list-item>
@@ -72,7 +72,7 @@
                 </v-list-item-content>
                 <v-list-item-action>
                   <v-avatar color="primary light-1" size="53">
-                    <v-icon color="white">mdi-car-pickup</v-icon>
+                    <v-icon color="white">mdi mdi-email-box</v-icon>
                   </v-avatar>
                 </v-list-item-action>
               </v-list-item>
@@ -113,7 +113,7 @@
                 <span>{{item.mode }}</span>
               </template>
               <template v-slot:[`item.created_at`]="{ item }">
-                <span>{{item.created_at }}</span>
+                <span>{{ new Date(item.created_at).toLocaleString() }}</span>
               </template>
             </v-data-table>
           </v-card-text>

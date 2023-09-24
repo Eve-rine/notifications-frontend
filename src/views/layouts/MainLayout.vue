@@ -17,6 +17,7 @@
               <v-img
                   alt="Logo"
                   transition="scale-transition"
+                  :src="require('../../assets/logo.png')"
               />
             </v-avatar>
           </div>
@@ -169,7 +170,7 @@ export default {
       },
       {
         title: 'Notify',
-        icon: 'mdi-account-multiple',
+        icon: 'mdi-bell-badge-outline',
         to: '/notify',
         sublinks: []
       },
