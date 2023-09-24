@@ -17,6 +17,7 @@ export default new Vuex.Store({
         notifications: state => state.notifications,
         notification_stats: state => state.notification_stats,
         users: state => state.users,
+        user: state => state.user,
 
     },
     mutations: {
@@ -29,8 +30,8 @@ export default new Vuex.Store({
             console.log(commit)
             instance('post', `auth/login`, payload)
                 .then(res => {
-                    localStorage.setItem('Fikisha_user', JSON.stringify(res.data.data))
-                    localStorage.setItem('Fikisha_token', res.data.token)
+                    localStorage.setItem('user', JSON.stringify(res.data.data))
+                    localStorage.setItem('token', res.data.token)
                     Event.$emit('ApiSuccess', 'Logging In...')
                     window.location.replace('/dashboard')
                 })

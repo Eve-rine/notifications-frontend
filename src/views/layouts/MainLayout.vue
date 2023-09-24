@@ -98,7 +98,7 @@
         </v-list>
         <template v-slot:append>
           <div class="pa-2">
-            <v-btn block text @click="logout">
+            <v-btn block text @click="logout"  v-if="user">
               <v-icon>mdi-logout</v-icon> Logout
             </v-btn>
           </div>
@@ -123,6 +123,7 @@
         <v-tooltip left>
           <template v-slot:activator="{ on, attrs }">
             <v-btn
+                v-if="user"
                 v-bind="attrs"
                 v-on="on"
                 @click="logout"
@@ -177,6 +178,11 @@ export default {
     logout(){
       this.$store.dispatch('logout');
     }
-  }
+  },
+  computed: {
+    user(){
+      return this.$store.getters['user'];
+    }
+  },
 };
 </script>

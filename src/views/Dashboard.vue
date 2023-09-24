@@ -104,7 +104,6 @@
                 :items="notifications"
             >
               <template v-slot:[`item.ID`]="{ index }">
-                <!-- <template v-slot:item.ID="{ index }"> -->
                 <span>{{ index + 1 }}</span>
               </template>
               <template v-slot:[`item.sent_to`]="{ item }">
