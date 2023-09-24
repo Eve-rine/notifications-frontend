@@ -2,13 +2,14 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 // login
 import LoginRegister from '../components/LoginComponent.vue'
+import Dashboard from "@/views/Dashboard.vue";
 
 Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
     name: 'home',
-    // component: HomeView
+    component: Dashboard,
   },
   {
     path: '/dashboard',
@@ -23,6 +24,11 @@ const routes = [
     name: 'loginPage',
     component: LoginRegister,
     },
+  {
+    path: '/send-notification',
+    name: 'SendNotification',
+    component: () => import('../components/SendNotification.vue'),
+  },
 
 ]
 

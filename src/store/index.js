@@ -9,10 +9,14 @@ export default new Vuex.Store({
         user: null,
         token: null,
         notifications: [],
+        notification_stats:[],
+        users: [],
 
     },
     getters: {
         notifications: state => state.notifications,
+        notification_stats: state => state.notification_stats,
+        users: state => state.users,
 
     },
     mutations: {
@@ -44,10 +48,53 @@ export default new Vuex.Store({
                     Event.$emit('ApiError', 'Unable to log out')
                 })
         },
+        getNotifications({commit}){
+            instance('get','get-notifications-logs')
+                .then((res)=>{
+                    commit('MUTATE', { state: 'notifications', data: res.data.data })
+                })
+                .catch(()=>{
+                    // console the error
+                    Event.$emit('ApiError', 'Error getting orders')
+
+                })
+        },
+        getNotificationStats({commit}){
+            instance('get','get-notifications-stats')
+                .then((res)=>{
+                    commit('MUTATE', { state: 'notification_stats', data: res.data })
+                })
+                .catch(()=>{
+                    // console the error
+                    Event.$emit('ApiError', 'Error getting orders')
+
+                })
+        },
+        getUsers({commit}){
+            instance('get','get-users')
+                .then((res)=>{
+                    commit('MUTATE', { state: 'users', data: res.data.data })
+                })
+                .catch(()=>{
+                    // console the error
+                    Event.$emit('ApiError', 'Error getting orders')
+
+                })
+        },
+        senNotification({dispatch}, payload){
+            instance('post','send-notification',payload)
+                .then(()=>{
+                    Event.$emit('ApiSuccess', 'Notification Successfully sent')
+                    dispatch('getNotifications')
+
+                })
+                .catch(()=>{
+                    Event.$emit('ApiError', 'Error sending notification')
+
+                })
+        }
     },
-    modules: {
-        notification: {}
-    }
+
 })
 
 

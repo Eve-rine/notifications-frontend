@@ -13,8 +13,8 @@
             <v-list>
               <v-list-item class="stats">
                 <v-list-item-content>
-                  <v-list-item-title class="text-lg-h5">{{customers?
-                      customers.length:0
+                  <v-list-item-title class="text-lg-h5">{{notification_stats?
+                      notification_stats.total:0
                     }}</v-list-item-title>
                   <v-list-item-subtitle>Total Notifications</v-list-item-subtitle>
                 </v-list-item-content>
@@ -39,10 +39,10 @@
             <v-list>
               <v-list-item class="stats">
                 <v-list-item-content>
-                  <v-list-item-title class="text-lg-h5">{{orders?
-                      orders.length:0
+                  <v-list-item-title class="text-lg-h5">{{notification_stats?
+                      notification_stats.sms:0
                     }}</v-list-item-title>
-                  <v-list-item-subtitle>Total Sms Notifiactions</v-list-item-subtitle>
+                  <v-list-item-subtitle> Sms Notifiactions</v-list-item-subtitle>
                 </v-list-item-content>
                 <v-list-item-action>
                   <v-avatar color="primary light-1" size="53">
@@ -65,10 +65,10 @@
             <v-list>
               <v-list-item class="stats">
                 <v-list-item-content>
-                  <v-list-item-title class="text-lg-h5">{{vehicles?
-                      vehicles.length:0
+                  <v-list-item-title class="text-lg-h5">{{notification_stats?
+                      notification_stats.email:0
                     }}</v-list-item-title>
-                  <v-list-item-subtitle>Total Email Notifications</v-list-item-subtitle>
+                  <v-list-item-subtitle> Email Notifications</v-list-item-subtitle>
                 </v-list-item-content>
                 <v-list-item-action>
                   <v-avatar color="primary light-1" size="53">
@@ -113,8 +113,8 @@
               <template v-slot:[`item.mode`]="{ item }">
                 <span>{{item.mode }}</span>
               </template>
-              <template v-slot:[`item.sent_at`]="{ item }">
-                <span>{{item.sent_at }}</span>
+              <template v-slot:[`item.created_at`]="{ item }">
+                <span>{{item.created_at }}</span>
               </template>
             </v-data-table>
           </v-card-text>
@@ -131,9 +131,8 @@ export default {
   beforeRouteEnter(to, from, next) {
     next((v) => {
       console.log(v)
-      // v.$store.dispatch("getOrders");
-      // v.$store.dispatch("getVehicles");
-      // v.$store.dispatch("getCustomers");
+      v.$store.dispatch("getNotifications");
+      v.$store.dispatch("getNotificationStats");
     });
   },
   data: () => ({
@@ -152,41 +151,29 @@ export default {
       customer_id: "",
     },
     isValid: true,
-    orders: [],
-    vehicles: [],
-    customers: [],
-    loadedVehicles: [],
-    availableVehicles: [],
-    pendingOrders: [],
-    notifications: [],
+    headers: [
+      { text: "#", value: "id" },
+      { text: "Sent To", value: "user.name" },
+      { text: "Mode", value: "mode" },
+      { text: "Message", value: "message" },
+      { text: "Sent At", value: "created_at" },
+    ],
 
   }),
   computed: {
-    // orders() {
-    //   return this.$store.getters["orders"];
-    // },
+    notifications() {
+      return this.$store.getters["notifications"];
+    },
+    notification_stats() {
+      return this.$store.getters["notification_stats"];
+    },
     // vehicles() {
     //   // return this.$store.getters["vehicles"];
     //   // remove store
     //
     // },
 
-    // customers() {
-    //   return this.$store.getters["customers"];
-    // },
-    // loadedVehicles() {
-    //   return this.vehicles.filter((a) => a.status === "Loading");
-    //
-    // },
-    //
-    // availableVehicles() {
-    //   return this.vehicles.filter(
-    //       (a) => a.status === "Available" || a.status === "Loading"
-    //   );
-    // },
-    // pendingOrders() {
-    //   return this.orders.filter((a) => a.status === "Pending");
-    // },
+
   },
   methods: {
     allocate() {
