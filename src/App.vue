@@ -1,17 +1,29 @@
 <template>
-  <main-layout>
-  </main-layout>
-
+  <component :is="layoutForRoute">
+  </component>
 </template>
+
 <script>
 import MainLayout from "@/views/layouts/MainLayout.vue";
+import LoginLayout from "@/views/layouts/LoginLayout.vue"; // Import your login layout
+
 export default {
-  name: "App",
-  components: {
-    MainLayout,
+  computed: {
+    layoutForRoute() {
+      const currentRoute = this.$route;
+
+      // If the route is the login page, use the LoginLayout component
+      if (currentRoute.path === '/login') {
+        return LoginLayout;
+      }
+
+      // Otherwise, use the MainLayout component
+      return MainLayout;
+    },
   },
 };
 </script>
+
 
 <style>
 #app {
