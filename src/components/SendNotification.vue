@@ -105,7 +105,7 @@ export default {
       if (!this.isValid) {
         this.$refs.notificationForm.validate();
       } else {
-        this.$store.dispatch("senNotification", { ...this.formData });
+        this.$store.dispatch("sendNotification", { ...this.formData });
         this.$refs.notificationForm.reset();
       }
     },

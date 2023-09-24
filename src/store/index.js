@@ -81,7 +81,7 @@ export default new Vuex.Store({
 
                 })
         },
-        senNotification({dispatch}, payload){
+        sendNotification({dispatch}, payload){
             instance('post','send-notification',payload)
                 .then(()=>{
                     Event.$emit('ApiSuccess', 'Notification Successfully sent')
