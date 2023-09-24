@@ -4,10 +4,10 @@ const config = {
     baseURL: apiBaseUrl,
 };
 const jwtInterceptor = axios.create(config);
-let token=localStorage.getItem('Fikisha_token');
+let token=localStorage.getItem('token');
 const authInterceptor = (config) => {
     if (token) {
-        config.headers['Authorization'] = `Bearer ${localStorage.getItem('Fikisha_token')}`;
+        config.headers['Authorization'] = `Bearer ${localStorage.getItem('token')}`;
     }
     config.headers.common.Accept = "Application/json";
     config.headers["Access-Control-Allow-Origin"] = "*";

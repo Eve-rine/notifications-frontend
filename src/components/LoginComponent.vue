@@ -11,26 +11,26 @@
     </v-tabs>
     <v-card-text v-show="selectedTab == 2">
       <v-container>
-        <v-form ref="registerForm" v-model="valid" lazy-validation>
+        <v-form ref="registerForm" v-model="validRegisterForm" lazy-validation>
           <v-row>
             <v-col cols="12" sm="12" md="12">
-              <v-text-field v-model="name" :rules="[rules.required]" label="Full Name" maxlength="20" required></v-text-field>
+              <v-text-field v-model="registerForm.name" :rules="[rules.required]" label="Full Name" maxlength="20" required></v-text-field>
             </v-col>
             <v-col cols="12">
-              <v-text-field v-model="email" :rules="emailRules" label="E-mail" required></v-text-field>
+              <v-text-field v-model="registerForm.email" :rules="emailRules" label="E-mail" required></v-text-field>
             </v-col>
             <v-col cols="12">
-              <v-text-field v-model="phone_number" :rules="[rules.required]" label="Phone Number" required></v-text-field>
+              <v-select v-model="registerForm.role" :items="['admin','user']" label="Role" required></v-select>
             </v-col>
             <v-col cols="12">
-              <v-text-field v-model="password" :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'" :rules="[rules.required, rules.min]" :type="show1 ? 'text' : 'password'" name="input-10-1" label="Password" hint="At least 8 characters" counter @click:append="show1 = !show1"></v-text-field>
+              <v-text-field v-model="registerForm.phone_number" :rules="[rules.required]" label="Phone Number" required></v-text-field>
             </v-col>
-            <v-col class="d-flex" cols="12" sm="6" xsm="12">
-              <v-btn color="warning" @click="dialog = false">Continue as Guest</v-btn>
+            <v-col cols="12">
+              <v-text-field v-model="registerForm.password" :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'" :rules="[rules.required, rules.min]" :type="show1 ? 'text' : 'password'" name="input-10-1" label="Password" hint="At least 8 characters" counter @click:append="show1 = !show1"></v-text-field>
             </v-col>
             <v-spacer></v-spacer>
             <v-col class="d-flex" cols="12" sm="3" xsm="12">
-              <v-btn block :disabled="!valid" color="success" class="mr-4" @click="validate"> Register </v-btn>
+              <v-btn block :disabled="!validRegisterForm" color="success" class="mr-4" @click="Register"> Register </v-btn>
             </v-col>
           </v-row>
         </v-form>
@@ -38,20 +38,17 @@
     </v-card-text>
     <v-card-text v-show="selectedTab == 1">
       <v-container>
-        <v-form ref="loginForm" v-model="valid" lazy-validation>
+        <v-form ref="formLogin" v-model="isValid" lazy-validation>
           <v-row>
             <v-col cols="12">
-              <v-text-field v-model="loginEmail" :rules="loginEmailRules" label="E-mail" required></v-text-field>
+              <v-text-field v-model="loginForm.email" :rules="loginEmailRules" label="E-mail" required></v-text-field>
             </v-col>
             <v-col cols="12">
-              <v-text-field v-model="loginPassword" :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'" :rules="[rules.required, rules.min]" :type="show1 ? 'text' : 'password'" name="input-10-1" label="Password" hint="At least 8 characters" counter @click:append="show1 = !show1"></v-text-field>
-            </v-col>
-            <v-col class="d-flex" cols="12" sm="6" xsm="12">
-              <v-btn block color="warning" @click="dialog = false">Continue as Guest</v-btn>
+              <v-text-field v-model="loginForm.password" :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'" :rules="[rules.required, rules.min]" :type="show1 ? 'text' : 'password'" name="input-10-1" label="Password" hint="At least 8 characters" counter @click:append="show1 = !show1"></v-text-field>
             </v-col>
             <v-spacer></v-spacer>
             <v-col class="d-flex" cols="12" sm="3" xsm="12">
-              <v-btn block :disabled="!valid" color="success" class="mr-4" @click="validate"> Register </v-btn>
+              <v-btn block :disabled="!isValid" color="success" class="mr-4" @click.prevent="Login"> Login </v-btn>
             </v-col>
           </v-row>
         </v-form>
@@ -74,17 +71,25 @@ name: 'LoginComponent',
     selectTab(stuff) {
       this.selectedTab = stuff;
     },
-    validate() {
-      if (this.$refs.loginForm.validate()) {
-        this.snackbar = true;
+    Login() {
+      if (!this.validLoginForm) {
+        this.$refs.formLogin.validate();
+      } else {
+        this.$store.dispatch("login", { ...this.loginForm });
+        this.$refs.formLogin.reset();
+      }
+    },
+    Register() {
+      if (!this.validRegisterForm) {
+        this.$refs.registerForm.validate();
+      } else {
+        this.$store.dispatch("register", { ...this.registerForm });
+        this.$refs.registerForm.reset();
       }
     },
     reset() {
       this.$refs.form.reset();
     },
-    resetValidation() {
-      this.$refs.form.resetValidation();
-    }
   },
   data: () => ({
 
@@ -94,7 +99,9 @@ name: 'LoginComponent',
     tabsName: ["Login", "Register"],
     text: "",
     tabs: 2,
-    valid: true,
+    validRegisterForm: true,
+    validLoginForm: true,
+    isValid: true,
     name: "",
     email: "",
     phone_number: "",
@@ -113,17 +120,19 @@ name: 'LoginComponent',
     password: "",
     rules: {
       required: value => !!value || "Required.",
-      min: v => (v && v.length >= 8) || "Min 8 characters"
-    }
+      min: v => (v && v.length >= 6) || "Min 8 characters"
+    },
+    registerForm: {
+      name: "",
+      email: "",
+      phone_number: "",
+      password: ""
+    },
+    loginForm: {
+      email: "",
+      password: ""
+    },
   }),
-  watch: {
-    // tab(val) {
-    //   this.selectedTab = val;
-    // },
-    // selectedTab(val) {
-    //   this.tab = val;
-    // }
-  },
 
 }
 </script>

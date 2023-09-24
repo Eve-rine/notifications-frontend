@@ -159,6 +159,7 @@ export default {
     menu: false,
     message: false,
     hints: true,
+    user: JSON.parse(localStorage.getItem('user')),
     Links: [
       {
         title: 'Dashboard',
@@ -180,9 +181,6 @@ export default {
     }
   },
   computed: {
-    user(){
-      return this.$store.getters['user'];
-    }
   },
 };
 </script>

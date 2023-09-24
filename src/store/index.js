@@ -27,16 +27,39 @@ export default new Vuex.Store({
     },
     actions: {
         login({commit}, payload) {
-            console.log(commit)
             instance('post', `auth/login`, payload)
                 .then(res => {
                     localStorage.setItem('user', JSON.stringify(res.data.data))
+                    commit('MUTATE', { state: 'user', data: res.data.data })
                     localStorage.setItem('token', res.data.token)
+                    commit('MUTATE', { state: 'token', data: res.data.token })
                     Event.$emit('ApiSuccess', 'Logging In...')
-                    window.location.replace('/dashboard')
+                    router.push('/dashboard')
                 })
                 .catch(() => {
                     Event.$emit('ApiError', 'Incorrect credentials')
+                })
+        },
+        register({commit}, payload) {
+            instance('post', `auth/register`, payload)
+                .then(res => {
+                    Event.$emit('ApiSuccess', 'Registration Successful')
+                    // login the user if registration is successful
+                    instance('post', `auth/login`, payload)
+                        .then(res => {
+                            // set the user and token in the store
+                            localStorage.setItem('user', JSON.stringify(res.data.data))
+                            localStorage.setItem('token', res.data.token)
+                            commit('MUTATE', { state: 'user', data: res.data.data })
+                            router.push('/dashboard')
+                        })
+                        .catch(() => {
+                            Event.$emit('ApiError', 'Incorrect credentials')
+                        })
+
+                })
+                .catch((err) => {
+                    Event.$emit('ApiError',err.response.data.message )
                 })
         },
         logout() {
@@ -56,7 +79,7 @@ export default new Vuex.Store({
                 })
                 .catch(()=>{
                     // console the error
-                    Event.$emit('ApiError', 'Error getting orders')
+                    Event.$emit('ApiError', 'Error getting notifications')
 
                 })
         },
@@ -67,7 +90,7 @@ export default new Vuex.Store({
                 })
                 .catch(()=>{
                     // console the error
-                    Event.$emit('ApiError', 'Error getting orders')
+                    Event.$emit('ApiError', 'Error getting stats')
 
                 })
         },
@@ -78,7 +101,7 @@ export default new Vuex.Store({
                 })
                 .catch(()=>{
                     // console the error
-                    Event.$emit('ApiError', 'Error getting orders')
+                    // Event.$emit('ApiError', 'Error getting users')
 
                 })
         },
@@ -87,6 +110,7 @@ export default new Vuex.Store({
                 .then(()=>{
                     Event.$emit('ApiSuccess', 'Notification Successfully sent')
                     dispatch('getNotifications')
+                    router.push('/dashboard')
 
                 })
                 .catch(()=>{
