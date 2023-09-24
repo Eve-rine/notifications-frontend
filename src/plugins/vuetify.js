@@ -1,28 +1,28 @@
-import '@mdi/font/css/materialdesignicons.css'
-import 'vuetify/styles'
+import Vue from "vue";
+import Vuetify from "vuetify/lib/framework";
+import colors from "vuetify/lib/util/colors";
 
-const myCustomLightTheme = {
-    dark: false,
-    colors: {
-        background: '#FFFFFF',
-        surface: '#FFFFFF',
-        primary: '#6200EE',
-        'primary-darken-1': '#3700B3',
-        secondary: '#03DAC6',
-        'secondary-darken-1': '#018786',
-        error: '#B00020',
-        info: '#2196F3',
-        success: '#4CAF50',
-        warning: '#FB8C00',
-    },
-}
+Vue.use(Vuetify);
 
-const vuetify = createVuetify({
-    ssr: true,
+const vuetify = new Vuetify({
     theme: {
-        defaultTheme: 'myCustomLightTheme',
         themes: {
-            myCustomLightTheme,
+            light: {
+                primary: "#3F51B5",
+                secondary: colors.grey.darken1,
+                accent: "#8d021f",
+                error: colors.red.accent3,
+                background: colors.grey.lighten3,
+                aside: colors.indigo.darken3,
+                info: colors.teal.darken1,
+                landingBackground: colors.grey.lighten3,
+            },
+            dark: {
+                primary: "#228A42",
+                secondary: colors.grey.darken1,
+                accent: colors.pink.darken1,
+                background: "#121212",
+            },
         },
     },
 });
