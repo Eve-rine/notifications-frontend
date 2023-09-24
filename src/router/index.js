@@ -25,7 +25,7 @@ const routes = [
     component: LoginRegister,
     },
   {
-    path: '/send-notification',
+    path: '/notify',
     name: 'SendNotification',
     component: () => import('../components/SendNotification.vue'),
   },

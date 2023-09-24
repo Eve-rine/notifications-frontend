@@ -90,7 +90,7 @@
             <div class="ma-2">
               <v-btn
                   class="indigo white--text"
-                  @click="openModal()"
+                 :to="{name:'SendNotification'}"
               >
                 <v-icon class="mr-2">mdi-plus</v-icon>Send Notification
               </v-btn>
@@ -167,44 +167,11 @@ export default {
     notification_stats() {
       return this.$store.getters["notification_stats"];
     },
-    // vehicles() {
-    //   // return this.$store.getters["vehicles"];
-    //   // remove store
-    //
-    // },
 
 
   },
   methods: {
-    allocate() {
-      if (!this.isValid) {
-        this.$refs.loadingForm.validate();
-      } else {
-        this.formData.status = "Loading";
-        this.$store.dispatch("allocateOrder", { ...this.formData });
-        this.$refs.loadingForm.reset();
-      }
-    },
-    dispatchOrders() {
-      if (!this.isValid) {
-        this.$refs.dispatchForm.validate();
-      } else {
-        this.$store.dispatch("dispatchOrders", { ...this.dispatchForm });
-        this.$refs.dispatchForm.reset();
-      }
-    },
-    resetform() {
-      this.$refs.loadingForm.reset();
-    },
-    resetDispatchForm() {
-      this.$refs.dispatchForm.reset();
-    },
-    getCustomer() {
-      let selectedOrder = this.orders.filter(
-          (a) => a.id === this.dispatchForm.order_number
-      );
-      this.dispatchForm.customer_id = selectedOrder[0].customer_id;
-    },
+
   },
 };
 </script>

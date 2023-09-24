@@ -1,7 +1,5 @@
 <template>
   <v-app>
-    <!--  Side Bar  -->
-    <!--    <template v-if="!$route.path.includes('login')">-->
     <template>
       <v-navigation-drawer
           v-model="drawer"
